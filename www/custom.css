@@ -1,0 +1,39 @@
+/* header title font */
+.main-header .logo{
+  font-family: "Georgia";
+}
+
+/* background color of header (logo part) */
+.skin-blue .main-header .logo {
+  background-color:    #90a4ae   ;
+}
+
+/* change the background color of header (logo part)  when mouse hover */
+.skin-blue .main-header .logo:hover {
+          background-color:  #626567 ;
+        }
+
+/* background color for the remaining part of the header */
+.skin-blue .main-header .navbar{
+    background-color:     #222d32    ;
+}
+
+/* sidebar toggle button */           
+.skin-blue .main-header .navbar .sidebar-toggle:hover{
+                              background-color:  #626567;
+                              
+                              }
+
+
+
+/*Boxes */
+.box.box-solid.box-primary>.box-header {
+  color:white;
+  background:   #2c3e50 
+}
+
+s
+
+
+
+
