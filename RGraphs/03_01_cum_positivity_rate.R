@@ -44,6 +44,10 @@ pos_neg_test <- function(data = "df_covid_ssa_state",
   
   n_time_stamp <- df_covid_ssa_state$time_stamp[1]
   
+  if (select_date > n_time_stamp){
+    select_date = n_time_stamp
+  }
+  
   df_covid_ssa_state<-subset(df_covid_ssa_state, df_covid_ssa_state$entidad %in% select_state)
   
   # Cummulative positivity rate: confirmed cases
