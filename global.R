@@ -215,5 +215,12 @@ pruebasVector <- dplyr::pull(test, "Pruebas")
 #             save_plot = FALSE,
 #             return_plot = TRUE)
 
+# doubling_times(select_state = c("Nacional", "ZMVM", "Ciudad de México",
+#                                 "Aguascalientes", "Hidalgo", "Baja California"),
+#                #data = "df_covid_ssa_state",
+#                outcome = "Muertes",
+#                print_plot = TRUE,
+#                save_plot = FALSE,
+#                return_plot = TRUE)
 
 

@@ -82,6 +82,10 @@ cum_outcomes_county <- function(data = "df_covid_ssa_county",
     types = "new_cases"
   }
   
+  if (select_date > n_time_stamp) {
+    select_date <- n_time_stamp
+  }
+  
   # Confirmed cases
   confirmed <- subset(county, var_resultado == "Confirmados") #We are focusing on confirmed cases
   confirmed <- confirmed %>%

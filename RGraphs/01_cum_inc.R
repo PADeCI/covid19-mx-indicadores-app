@@ -230,9 +230,9 @@ cum_inc <- function(select_state = "Ciudad de México",
   if ((length(select_state)*length(outcome))>=14){
     multi = 1
   } else {
-    multi = 3-log(length(select_state)*length(outcome))
-    if (12 + multi >= 15){
-      multi = 2
+    multi = 4-log(length(select_state)*length(outcome))
+    if (12 + multi >= 16){
+      multi = 4
     } else {
       multi = multi
     }
@@ -307,7 +307,9 @@ cum_inc <- function(select_state = "Ciudad de México",
             axis.text.y = element_text(size = 8+multi,
                                        family = ""),
             legend.text = element_text(size = 12+multi,
-                                       family = "")) +
+                                       family = ""),
+            strip.text = element_text(size = 12+multi,
+                                      family = "")) +
       if (save_plot == TRUE) {
         ggsave(paste0("figs/", n_time_stamp, "/", prefix, "_", prefix_type, "_", paste(outcome ,collapse="-"), states_list, ".jpeg"), 
                width = 14, height = 6)}
@@ -379,7 +381,9 @@ cum_inc <- function(select_state = "Ciudad de México",
             axis.text.y = element_text(size = 8+multi,
                                        family = ""),
             legend.text = element_text(size = 12+multi,
-                                       family = ""))+
+                                       family = ""),
+            strip.text = element_text(size = 12+multi,
+                                      family = ""))+
       if (save_plot == TRUE){
         ggsave(paste0("figs/", n_time_stamp, "/", prefix, "_", prefix_type, "_", paste(outcome ,collapse="-"), states_list, ".jpeg"), 
                width = 14, height = 6)}
@@ -467,7 +471,9 @@ cum_inc <- function(select_state = "Ciudad de México",
             axis.text.y = element_text(size = 8+multi,
                                        family = ""),
             legend.text = element_text(size = 12+multi,
-                                       family = "")) +
+                                       family = ""),
+            strip.text = element_text(size = 12+multi,
+                                      family = "")) +
       if (save_plot == TRUE){
         ggsave(paste0("figs/", n_time_stamp, "/", prefix, "_", prefix_type, "_", paste(outcome ,collapse="-"), "_", 
                       "by_state", ".jpeg"), 
@@ -541,7 +547,9 @@ cum_inc <- function(select_state = "Ciudad de México",
             axis.text.y = element_text(size = 8+multi,
                                        family = ""),
             legend.text = element_text(size = 12+multi,
-                                       family = ""))+
+                                       family = ""),
+            strip.text = element_text(size = 12+multi,
+                                      family = ""))+
       if (save_plot == TRUE){
         ggsave(paste0("figs/", n_time_stamp, "/", prefix, "_", prefix_type, "_", paste(outcome ,collapse="-"), states_list, ".jpeg"), 
                width = 14, height = 6)}
@@ -612,7 +620,9 @@ cum_inc <- function(select_state = "Ciudad de México",
             axis.text.y = element_text(size = 8+multi,
                                        family = ""),
             legend.text = element_text(size = 12+multi,
-                                       family = ""))+
+                                       family = ""),
+            strip.text = element_text(size = 12+multi,
+                                      family = ""))+
       if (save_plot == TRUE){
         ggsave(paste0("figs/", n_time_stamp, "/", prefix, "_", prefix_type, "_", paste(outcome ,collapse="-"), states_list, ".jpeg"), 
                width = 14, height = 6)}

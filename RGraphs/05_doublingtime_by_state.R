@@ -157,11 +157,12 @@ doubling_times <- function(select_state = "Ciudad de México",
   pais<-rep("México", length(date)) #Vector for the country variable
   entidad<-rep("4 días", length(date)) #Vector for the name of the series
   var_resultado<-rep("Confirmados", length(entidad)) #Vector for the var_resultado variable
-  time_cases<-seq(1,length(var_resultado)) #Vector for the time_cases variale
+  time_cases<-seq(1,length(var_resultado)) #Vector for the time_cases vTimese
   data_4<-data.frame(pais, entidad, var_resultado, date, cum_cases, time_cases) #Arrange vectors as data frame
   
+  
   data_4<-data_4[complete.cases(data_4),] #Keep only the elements of the DF that are complete (i.e. doubling times)
-  data_4$cum_cases<-as.numeric.factor(data_4$cum_cases) #To start from the 10th case (this still needs to be improved)
+  #data_4$cum_cases<-as.numeric.factor(data_4$cum_cases) #To start from the 10th case (this still needs to be improved)
   data_4$cum_cases[data_4$cum_cases==16]<-10
   data_4$cum_cases[data_4$cum_cases==32]<-20
   data_4$cum_cases[data_4$cum_cases==64]<-40
@@ -176,6 +177,7 @@ doubling_times <- function(select_state = "Ciudad de México",
   data_4$cum_cases[data_4$cum_cases==32768]<-20480
   data_4$cum_cases[data_4$cum_cases==65536]<-40960
   data_4$cum_cases[data_4$cum_cases==131072]<-81920
+  data_4$cum_cases <-  as.numeric(as.character(data_4$cum_cases))
   state<-rbind(state, data_4) #Append to the original data frame
   
   #Doubling times (2 days)
@@ -195,7 +197,7 @@ doubling_times <- function(select_state = "Ciudad de México",
   data_2<-data.frame(pais, entidad, var_resultado, date, cum_cases, time_cases)
   
   data_2<-data_2[complete.cases(data_2),]
-  data_2$cum_cases<-as.numeric.factor(data_2$cum_cases)
+  #data_2$cum_cases<-as.numeric.factor(data_2$cum_cases)
   data_2$cum_cases[data_2$cum_cases==16]<-10
   data_2$cum_cases[data_2$cum_cases==32]<-20
   data_2$cum_cases[data_2$cum_cases==64]<-40
@@ -210,6 +212,8 @@ doubling_times <- function(select_state = "Ciudad de México",
   data_2$cum_cases[data_2$cum_cases==32768]<-20480
   data_2$cum_cases[data_2$cum_cases==65536]<-40960
   data_2$cum_cases[data_2$cum_cases==131072]<-81920
+  data_2$cum_cases <-  as.numeric(as.character(data_2$cum_cases))
+  
   state<-rbind(state, data_2)
   
   
@@ -230,7 +234,7 @@ doubling_times <- function(select_state = "Ciudad de México",
   data_5<-data.frame(pais, entidad, var_resultado, date, cum_cases, time_cases)
   
   data_5<-data_5[complete.cases(data_5),]
-  data_5$cum_cases<-as.numeric.factor(data_5$cum_cases)
+  #data_5$cum_cases<-as.numeric.factor(data_5$cum_cases)
   data_5$cum_cases[data_5$cum_cases==16]<-10
   data_5$cum_cases[data_5$cum_cases==32]<-20
   data_5$cum_cases[data_5$cum_cases==64]<-40
@@ -245,6 +249,8 @@ doubling_times <- function(select_state = "Ciudad de México",
   data_5$cum_cases[data_5$cum_cases==32768]<-20480
   data_5$cum_cases[data_5$cum_cases==65536]<-40960
   data_5$cum_cases[data_5$cum_cases==131072]<-81920
+  data_5$cum_cases <-  as.numeric(as.character(data_5$cum_cases))
+  
   state<-rbind(state, data_5)
   
   #Doubling times (7 days)
@@ -264,7 +270,7 @@ doubling_times <- function(select_state = "Ciudad de México",
   data_7<-data.frame(pais, entidad, var_resultado, date, cum_cases, time_cases)
   
   data_7<-data_7[complete.cases(data_7),]
-  data_7$cum_cases<-as.numeric.factor(data_7$cum_cases)
+  #data_7$cum_cases<-as.numeric.factor(data_7$cum_cases)
   data_7$cum_cases[data_7$cum_cases==16]<-10
   data_7$cum_cases[data_7$cum_cases==32]<-20
   data_7$cum_cases[data_7$cum_cases==64]<-40
@@ -279,6 +285,8 @@ doubling_times <- function(select_state = "Ciudad de México",
   data_7$cum_cases[data_7$cum_cases==32768]<-20480
   data_7$cum_cases[data_7$cum_cases==65536]<-40960
   data_7$cum_cases[data_7$cum_cases==131072]<-81920
+  data_7$cum_cases <-  as.numeric(as.character(data_7$cum_cases))
+  
   state<-rbind(state, data_7)
   
   # *****************************************************************************
@@ -345,13 +353,13 @@ doubling_times <- function(select_state = "Ciudad de México",
     theme_minimal()+ #This is the basic theme to be used
     theme(plot.title = element_text(face = "bold", 
                                     size = 16,
-                                    family = "Open Sans"),
+                                    family = "Times"),
           plot.subtitle = element_text(size = 12,
                                        face = "plain", 
-                                       family = "Open Sans"),
+                                       family = "Times"),
           plot.caption = element_text(hjust = 0, 
                                       face = "plain", 
-                                      family = "Open Sans",
+                                      family = "Times",
                                       size = 8,
                                       colour = "#777777"),
           panel.background = element_rect(fill = "white", 
@@ -359,20 +367,20 @@ doubling_times <- function(select_state = "Ciudad de México",
                                           size = 0.15, 
                                           linetype = "solid"),
           axis.title.x = (element_text(size = 12,
-                                       family = "Open Sans")),
+                                       family = "Times")),
           axis.title.y = (element_text(size =12,
-                                       family = "Open Sans")),
+                                       family = "Times")),
           element_line(linetype = "dotted",
                        colour = "gray99",
                        size = .1),
           axis.text.x = element_text(angle = 45,
                                      hjust = 1,
                                      size = 8, 
-                                     family = "Open Sans"),
+                                     family = "Times"),
           axis.text.y = element_text(size = 8,
-                                     family = "Open Sans"),
+                                     family = "Times"),
           legend.text = element_text(size = 12,
-                                     family = "Open Sans"))+
+                                     family = "Times"))+
     if (save_plot == TRUE){
       ggsave(paste0("figs/", n_time_stamp, "/", "11", "_", outcome, "_", 
                     states_list, ".jpeg"), 
@@ -380,7 +388,7 @@ doubling_times <- function(select_state = "Ciudad de México",
   
   doubling_plot<-ggplotly(gg_outcome, tooltip = "text")%>%
     layout(margin = list(l = 50, r = 50, t = 60, b = 150), ##bottom margin in pixels
-           font = "Arial",
+           font = "Times",
            annotations = 
              list(x = 0, y = -0.35, #position of text adjust as needed 
                   text = paste(" Elaborado por @PADeCI1 el", format(Sys.Date(), "%d/%m/%Y"), 
