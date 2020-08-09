@@ -933,8 +933,8 @@ server <- function(input, output, session) {
                valueBox(
                  paste0(defuncionesVector[34]),
                  subtitle = "Defunciones",
-                 icon = icon("fas fa-vials"),
-                 color    = "olive", 
+                 icon = icon("fas fa-ribbon"),
+                 color    = "teal", 
                )
              })
              
@@ -3076,8 +3076,8 @@ server <- function(input, output, session) {
   
   observe({
     updateSelectInput(
-      session, "n_lag_inf", choices = v_states,
-      selected = if(input$all12) v_states
+      session, "n_lag_inf", choices = v_states_zmvm,
+      selected = if(input$all12) v_states_zmvm
     )
   })
   
@@ -3095,8 +3095,8 @@ server <- function(input, output, session) {
   #States
   observe({
     updateSelectInput(
-      session, "states_cum_inc_nofacet", choices = v_states,
-      selected = if(input$all_states_11) v_states
+      session, "states_cum_inc_nofacet", choices = v_states_zmvm,
+      selected = if(input$all_states_11) v_states_zmvm
     )
   })
   
@@ -3128,8 +3128,8 @@ server <- function(input, output, session) {
   
   observe({
     updateSelectInput(
-      session, "states", choices = v_states,
-      selected = if(input$all13) v_states
+      session, "states", choices = v_states_zmvm,
+      selected = if(input$all13) v_states_zmvm
     )
   })
   

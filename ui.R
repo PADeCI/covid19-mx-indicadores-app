@@ -1,19 +1,27 @@
 # User Interface ----------------------------------------------------------
 
 
+
 # Title left side ---------------------------------------------------------
 
 title <- tags$a(href = "https://padeci.org",
                 tags$img(src = "padeci.png", height = "80", width = "80")
+
 )
 
+# title <- tags$a("HOLAS", 
+#                 tags$img(src = "padeci.png", height = "80", width = "80")
+#                 
+# )
 
+#tags$a(href = "https://github.com/PADeCI", "GitHub"),
 ui <- 
   fluidPage(theme = shinytheme("sandstone"),
             
             dashboardPage(
-              
+              title = "IndicadoresCovid",
               dashboardHeader(title = title,
+                              
                               # Set height of dashboardHeader
                               tags$li(class = "dropdown",
                                       tags$style(".main-header {max-height: 80px}"),
@@ -39,7 +47,7 @@ ui <-
                                        tabName = "graph1"),
                            menuSubItem("Acumulados/Incidentes",
                                        tabName = "graph11"),
-                           menuSubItem("Pruebas/tasas de positividad",
+                           menuSubItem("Tasa de positividad",
                                        tabName = "graph2"),
                            menuSubItem("Tasa de letalidad",
                                        tabName = "graph3"),
@@ -298,7 +306,7 @@ ui <-
                                
                                selectInput(inputId = "states_cum_inc_nofacet",
                                            label = "Selecciona estados", 
-                                           choices = v_states, 
+                                           choices = v_states_zmvm, 
                                            selected = "Ciudad de México",
                                            multiple = TRUE),
                                checkboxInput("all_states_11", "Seleccionar Todos/Ninguno", value = TRUE),
@@ -384,7 +392,7 @@ ui <-
                               
                               selectInput(inputId = "states_pos_neg_test",
                                           label = "Selecciona estados", 
-                                          choices = v_states , 
+                                          choices = v_states_zmvm , 
                                           selected = "Ciudad de México",
                                           multiple = TRUE),
                               checkboxInput("all_states_2", "Seleccionar Todos/Ninguno", value = TRUE),
@@ -459,7 +467,7 @@ ui <-
                               
                               selectInput(inputId = "states_cum_fatality",
                                           label = "Selecciona estados", 
-                                          choices = v_states, 
+                                          choices = v_states_zmvm, 
                                           selected = "Ciudad de México",
                                           multiple = TRUE),
                               checkboxInput("all_states_3", "Seleccionar Todos/Ninguno", value = TRUE),
@@ -525,7 +533,7 @@ ui <-
                                           selected = "Ciudad de México",
                                           choices = v_states_zmvm, 
                                           multiple = TRUE),
-                              checkboxInput("all13", "Seleccionar Todos/Ninguno", value = TRUE),
+                              checkboxInput("all13", "Seleccionar Todos/Ninguno", value = FALSE),
                               footer =
                                 
                                 actionButton(
@@ -582,7 +590,7 @@ ui <-
                                           label = "Selecciona estados", 
                                           choices = v_states,
                                           
-                                          selected = "Ciudad de México",
+                                          selected = "Aguascalientes",
                                           multiple = FALSE,
                               ),
                               footer =
