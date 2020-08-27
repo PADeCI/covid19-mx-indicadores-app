@@ -3046,18 +3046,24 @@ server <- function(input, output, session) {
         
         tags$br(),
         tags$br(),
-        tags$b("Tasa de positividad acumulada: "),
+        tags$b("Tasa de positividad acumulada (TPosA): "),
         "Porcentaje de pruebas de COVID-19 que resultaron positivas hasta una fecha determinada.",
         tags$br(),
-        tags$b("Tasa de incidencia acumulada:"), 
+        tags$br(),
+      
+        tags$b("Tasa de incidencia acumulada (TIA):"), 
         "Casos positivos de COVID-19, respecto al total de la población de un estado/municipio. Los valores indican el número de casos positivos por cada 100,000 habitantes. ",
         
         tags$br(),
-        tags$b("Tasa de pruebas acumulada:") ,
+        tags$br(),
+        
+        tags$b("Tasa de pruebas acumulada (TPA):") ,
         "Número de pruebas de COVID-19 realizadas, respecto al total de la población de un estado/municipio. Los valores indican el número de pruebas realizadas por cada 100,000 habitantes. 
         ",
         tags$br(),
-        tags$b("Tasa de letalidad acumulada:"),
+        tags$br(),
+        
+        tags$b("Tasa de letalidad acumulada (TLetal):"),
         "Porcentaje de casos confirmados de COVID-19 que resultaron en fallecimiento hasta una fecha determinada. ",
   
         tags$br(),
