@@ -33,7 +33,7 @@ cum_inc <- function(select_state = "Ciudad de México",
                     data = "df_covid_ssa_state",
                     outcome = c("Confirmados", "Hospitalizados", 
                                 "Intubados", "Muertes", "Pruebas", 
-                                "Síntomas", "UCI"), 
+                                "Síntomas", "UCI", "TPos", "TI", "TP", "TLetal"), 
                     type = c("cum_cases", "new_cases"),
                     select_trans = c("identity", "log"),
                     scales = c("fixed", "free", "free_y", "free_x"),
@@ -55,6 +55,99 @@ cum_inc <- function(select_state = "Ciudad de México",
            send_label = case_when(time_cases ==last_case ~ entidad)) 
   
   
+  if (type == "cum_cases") {
+    types = "cum_cases"
+  } else if (type == "new_cases") {
+    types = "new_cases"
+  }
+
+  
+  # Positivity rates (cum and inc)
+  
+        # Confirmed cases
+        confirmed <- subset(df_outcome, var_resultado == "Confirmados") #We are focusing on confirmed cases
+        confirmed <- confirmed %>%
+          group_by(entidad) %>%
+          rename(Confirmados_cum = cum_cases,
+                 Confirmados_inc = inc_cases)
+        confirmed$entidad[confirmed$entidad=='México'] <- 'Nacional'
+        confirmed <- confirmed[c("entidad", "date", "Confirmados_cum", "Confirmados_inc")]
+        
+        # Tests
+        test <- subset(df_outcome, var_resultado == "Pruebas") #We are focusing on tests
+        test <- test %>%
+          group_by(entidad) %>%
+          rename(Pruebas_cum = cum_cases, 
+                 Pruebas_inc = inc_cases)
+        test$entidad[test$entidad=='México'] <- 'Nacional'
+        test <- test[c("entidad", "date", "Pruebas_cum", "Pruebas_inc")]
+        
+        tposa <- left_join(confirmed, test, by = c("entidad", "date")) 
+        tposa$cum_cases <- (tposa$Confirmados_cum/tposa$Pruebas_cum)*100
+        tposa$inc_cases <- (tposa$Confirmados_inc/tposa$Pruebas_inc)*100
+        tposa <- tposa[c("entidad", "date", "cum_cases", "inc_cases")]
+        tposa$var_resultado <- "TPos"
+        
+        
+  # Incidence rates (cum and inc)
+        
+        # Confirmed cases
+        inci <- subset(df_outcome, var_resultado == "Confirmados") #We are focusing on confirmed cases
+        inci <- inci %>%
+          group_by(entidad) %>%
+          rename(Confirmados_cum = cum_cases,
+                 Confirmados_inc = inc_cases)
+        inci$entidad[inci$entidad=='México'] <- 'Nacional'
+        inci <- inci[c("entidad", "date", "Confirmados_cum", "Confirmados_inc", "population")]
+        
+        inci$cum_cases <- (inci$Confirmados_cum/inci$population)*100000
+        inci$inc_cases <- (inci$Confirmados_inc/inci$population)*100000
+        inci <- inci[c("entidad", "date", "cum_cases", "inc_cases")]
+        inci$var_resultado <- "TI"
+        
+  # Test rates (cum and inc)
+        
+        # Tests
+        trate <- subset(df_outcome, var_resultado == "Pruebas") #We are focusing on confirmed cases
+        trate <- trate %>%
+          group_by(entidad) %>%
+          rename(Pruebas_cum = cum_cases,
+                 Pruebas_inc = inc_cases)
+        trate$entidad[trate$entidad=='México'] <- 'Nacional'
+        trate <- trate[c("entidad", "date", "Pruebas_cum", "Pruebas_inc", "population")]
+        
+        trate$cum_cases <- (trate$Pruebas_cum/trate$population)*100000
+        trate$inc_cases <- (trate$Pruebas_inc/trate$population)*100000
+        trate <- trate[c("entidad", "date", "cum_cases", "inc_cases")]       
+        trate$var_resultado <- "TP"
+        
+  # Case fatality rates (cum and inc)
+        
+        # Deaths
+        death <- subset(df_outcome, var_resultado == "Muertes") #We are focusing on tests
+        death <- death %>%
+          group_by(entidad) %>%
+          rename(Muertes_cum = cum_cases, 
+                 Muertes_inc = inc_cases)
+        death$entidad[death$entidad=='México'] <- 'Nacional'
+        death <- death[c("entidad", "date", "Muertes_cum", "Muertes_inc")]
+        
+        tletal <- left_join(confirmed, death, by = c("entidad", "date")) 
+        tletal$cum_cases <- (tletal$Confirmados_cum/tletal$Muertes_cum)*100
+        tletal$inc_cases <- (tletal$Confirmados_inc/tletal$Muertes_inc)*100
+        tletal <- tletal[c("entidad", "date", "cum_cases", "inc_cases")]
+        tletal$var_resultado <- "TLetal"
+        
+        
+  remove(confirmed, death, test)
+  
+  df_outcome <- df_outcome[c("entidad", "date", "var_resultado", "cum_cases", "inc_cases", "time_stamp")]
+  
+  df_outcome <- rbind(df_outcome, tposa, inci, trate, tletal)
+  
+  df_outcome$time_stamp <- df_covid_ssa_state$time_stamp[1]
+
+  
   df_outcome$colors[df_outcome$var_resultado == "Confirmados"] <- "#D1495B"
   df_outcome$colors[df_outcome$var_resultado == "Hospitalizados"] <- "#00798C"
   df_outcome$colors[df_outcome$var_resultado == "Intubados"] <- "#30638E" 
@@ -62,6 +155,11 @@ cum_inc <- function(select_state = "Ciudad de México",
   df_outcome$colors[df_outcome$var_resultado == "Pruebas"] <- "#EDAE49" 
   df_outcome$colors[df_outcome$var_resultado == "Síntomas"] <- "#ff715b"
   df_outcome$colors[df_outcome$var_resultado == "UCI"] <- "#432371"
+  df_outcome$colors[df_outcome$var_resultado == "TIA"] <- "#eb1ab3"
+  df_outcome$colors[df_outcome$var_resultado == "TPosA"] <- "#8d10e0"
+  df_outcome$colors[df_outcome$var_resultado == "TLetal"] <- "#0895bd"
+  df_outcome$colors[df_outcome$var_resultado == "TPA"] <- "#b3d90b"
+  
   
   n_time_stamp <- df_covid_ssa_state$time_stamp[1]
   
@@ -132,6 +230,14 @@ cum_inc <- function(select_state = "Ciudad de México",
     titles <- "Casos sintomáticos acumulados de COVID-19 para varias entidades"
   } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="UCI" & type=="cum_cases"){
     titles <- "Casos acumulados en unidad de cuidados intensivos (UCI) por COVID-19 para varias entidades"
+  } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="TI" & type=="cum_cases"){
+    titles <- "Tasa de incidencia acumulada para varias entidades"
+  } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="TPos" & type=="cum_cases"){
+    titles <- "Tasa de positividad acumulada para varias entidades"
+  } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="TLetal" & type=="cum_cases"){
+    titles <- "Tasa de fatalidad acumulada para varias entidades"
+  } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="TP" & type=="cum_cases"){
+    titles <- "Tasa de pruebas acumulada para varias entidades"
   } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="Confirmados" & type=="cum_cases"){
     titles <- paste("Casos confirmados acumulados de COVID-19 en ", select_state, ".", sep = "")
   } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="Hospitalizados" & type=="cum_cases"){
@@ -146,6 +252,14 @@ cum_inc <- function(select_state = "Ciudad de México",
     titles <- paste("Casos sintomáticos acumulados de COVID-19 en ", select_state, ".", sep = "")
   } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="UCI" & type=="cum_cases"){
     titles <-paste("Casos acumulados en unidad de cuidados intensivos (UCI) en ", select_state, ".", sep = "")
+  } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="TI" & type=="cum_cases"){
+    titles <-paste("Tasa de incidencia acumulada en ", select_state, ".", sep = "")
+  } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="TPos" & type=="cum_cases"){
+    titles <-paste("Tasa de positividad acumulada en ", select_state, ".", sep = "")
+  } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="TLetal" & type=="cum_cases"){
+    titles <-paste("Tasa de letalidad acumulada en ", select_state, ".", sep = "")
+  } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="TP" & type=="cum_cases"){
+    titles <-paste("Tasa de pruebas acumulada en ", select_state, ".", sep = "")
   } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="Confirmados" & type=="new_cases"){
     titles <- "Casos confirmados incidentes de COVID-19 para varias entidades"
   } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="Hospitalizados" & type=="new_cases"){
@@ -160,6 +274,14 @@ cum_inc <- function(select_state = "Ciudad de México",
     titles <- "Casos sintomáticos incidentes de COVID-19 para varias entidades"
   } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="UCI" & type=="new_cases"){
     titles <- "Casos incidentes en unidad de cuidados intensivos (UCI) por COVID-19 para varias entidades"
+  } else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="TI" & type=="new_cases"){
+    titles <- "Tasa de incidencia diaria para varias entidades"
+  }else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="TPos" & type=="new_cases"){
+    titles <- "Tasa de positividad diaria para varias entidades"
+  }else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="TLetal" & type=="new_cases"){
+    titles <- "Tasa de letalidad diaria para varias entidades"
+  }else if (length(outcome)==1 & length(select_state)<11 & outcome[1]=="TP" & type=="new_cases"){
+    titles <- "Tasa de pruebas diaria para varias entidades"
   } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="Confirmados" & type=="new_cases"){
     titles <- paste("Casos confirmados incidentes de COVID-19 en ", select_state, ".", sep = "")
   } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="Hospitalizados" & type=="new_cases"){
@@ -174,6 +296,14 @@ cum_inc <- function(select_state = "Ciudad de México",
     titles <- paste("Casos sintomáticos incidentes de COVID-19 en ", select_state, ".", sep = "")
   } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="UCI" & type=="new_cases"){
     titles <-paste("Casos incidentes en unidad de cuidados intensivos (UCI) en ", select_state, ".", sep = "")
+  } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="TI" & type=="new_cases"){
+    titles <-paste("Tasa de incidencia diaria en ", select_state, ".", sep = "")
+  } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="TPos" & type=="new_cases"){
+    titles <-paste("Tasa de positividad diaria en ", select_state, ".", sep = "")
+  } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="TLetal" & type=="new_cases"){
+    titles <-paste("Tasa de letalidad diaria en ", select_state, ".", sep = "")
+  } else if (length(outcome)==1 & length(select_state)==1 & outcome[1]=="TP" & type=="new_cases"){
+    titles <-paste("Tasa de pruebas diaria en ", select_state, ".", sep = "")
   } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="Confirmados" & type=="new_cases"){
     titles <- "Casos confirmados incidentes de COVID-19 por entidad federativa"
   } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="Hospitalizados" & type=="new_cases"){
@@ -188,6 +318,14 @@ cum_inc <- function(select_state = "Ciudad de México",
     titles <- "Casos sintomáticos incidentes de COVID-19 por entidad federativa"
   } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="UCI" & type=="new_cases"){
     titles <- "Casos incidentes en unidad de cuidados intensivos (UCI) por COVID-19 por entidad federativa"
+  } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="TI" & type=="new_cases"){
+    titles <- "Tasa de incidencia diaria por entidad federativa"
+  }else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="TPos" & type=="new_cases"){
+    titles <- "Tasa de positividad diaria por entidad federativa"
+  }else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="TLetal" & type=="new_cases"){
+    titles <- "Tasa de letalidad diaria por entidad federativa"
+  }else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="TP" & type=="new_cases"){
+    titles <- "Tasa de pruebas diaria por entidad federativa"
   } else if(length(outcome)==1 & length(select_state)>=11 & outcome[1]=="Confirmados" & type=="cum_cases"){
     titles <- "Casos confirmados acumulados de COVID-19 por entidad federativa"
   } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="Hospitalizados" & type=="cum_cases"){
@@ -202,6 +340,14 @@ cum_inc <- function(select_state = "Ciudad de México",
     titles <- "Casos sintomáticos acumulados de COVID-19 por entidad federativa"
   } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="UCI" & type=="cum_cases"){
     titles <- "Casos acumulados en unidad de cuidados intensivos (UCI) por COVID-19 por entidad federativa"  
+  } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="TI" & type=="cum_cases"){
+    titles <- "Tasa de incidencia acumulada por entidad federativa"  
+  } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="TPos" & type=="cum_cases"){
+    titles <- "Tasa de positividad acumulada por entidad federativa"  
+  } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="TLetal" & type=="cum_cases"){
+    titles <- "Tasa de letalidad acumulada por entidad federativa"  
+  } else if (length(outcome)==1 & length(select_state)>=11 & outcome[1]=="TP" & type=="cum_cases"){
+    titles <- "Tasa de pruebas acumulada por entidad federativa"  
   }
   
   
@@ -220,7 +366,16 @@ cum_inc <- function(select_state = "Ciudad de México",
     color_outcome <- "#ff715b"
   } else if (length(outcome)==1 & outcome[1]=="UCI") {
     color_outcome <- "#432371"
+  } else if (length(outcome)==1 & outcome[1]=="TIA") {
+    color_outcome <- "#eb1ab3"
+  } else if (length(outcome)==1 & outcome[1]=="TPosA") {
+    color_outcome <- "#8d10e0"
+  } else if (length(outcome)==1 & outcome[1]=="TLetal") {
+    color_outcome <- "#0895bd"
+  } else if (length(outcome)==1 & outcome[1]=="TPA") {
+    color_outcome <- "##b3d90b"
   }
+
   
   type_ <- switch(type,
                   "cum_cases" = "acumuladas",
