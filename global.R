@@ -92,6 +92,12 @@ v_states <- c("Aguascalientes", "Baja California", "Baja California Sur",
 # Vector with output names 
 v_outcome <-  c("Confirmados", "Hospitalizados", "Intubado", 
                 "Muertes", "Pruebas", "Síntomas", "UCI")
+# Vector with output names just for 01_cum_inc
+
+v_outcome_cum <-  c("Confirmados", "Hospitalizados", "Intubado", 
+                    "Muertes", "Pruebas", "Síntomas", "UCI", "TPos", "TI", "TP", "TLetal")
+
+
 #Vector type cases
 v_type <- c("cum_cases", "new_cases")
 

@@ -167,14 +167,20 @@ ui <-
                               
                               width = 6,
                               
-                              title = "Indicador",
+                              title = "Indicadores!",
                               status = "primary",
                               solidHeader = TRUE,
                               #width = 5,
                               postition = "left",
                               selectInput(inputId = "indicator_1", 
                                           label = "Selecciona un indicador",
-                                          choices = v_outcome,
+                                          choices = c(v_outcome, 
+                                                      "Tasa Fatalidad" = "TLetal",
+                                                      "Tasa de Positividad" = "TPos",
+                                                      "Tasa de P" = "TP",
+                                                      "Tasa de Incidentes" = "TI"
+                                                      
+                                                      ),
                                           multiple = TRUE),
                               checkboxInput("all_ind_1", "Seleccionar Todos/Ninguno", value = FALSE),
                               footer =
