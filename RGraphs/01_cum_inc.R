@@ -84,8 +84,8 @@ cum_inc <- function(select_state = "Ciudad de México",
         
         tposa <- left_join(confirmed, test, by = c("entidad", "date")) 
         tposa$cum_cases <- (tposa$Confirmados_cum/tposa$Pruebas_cum)*100
-        tposa$inc_cases <- (tposa$Confirmados_inc/tposa$Pruebas_inc)*100
-        tposa <- tposa[c("entidad", "date", "cum_cases", "inc_cases")]
+        tposa$new_cases <- (tposa$Confirmados_inc/tposa$Pruebas_inc)*100
+        tposa <- tposa[c("entidad", "date", "cum_cases", "new_cases")]
         tposa$var_resultado <- "TPos"
         
         
@@ -101,8 +101,8 @@ cum_inc <- function(select_state = "Ciudad de México",
         inci <- inci[c("entidad", "date", "Confirmados_cum", "Confirmados_inc", "population")]
         
         inci$cum_cases <- (inci$Confirmados_cum/inci$population)*100000
-        inci$inc_cases <- (inci$Confirmados_inc/inci$population)*100000
-        inci <- inci[c("entidad", "date", "cum_cases", "inc_cases")]
+        inci$new_cases <- (inci$Confirmados_inc/inci$population)*100000
+        inci <- inci[c("entidad", "date", "cum_cases", "new_cases")]
         inci$var_resultado <- "TI"
         
   # Test rates (cum and inc)
@@ -117,8 +117,8 @@ cum_inc <- function(select_state = "Ciudad de México",
         trate <- trate[c("entidad", "date", "Pruebas_cum", "Pruebas_inc", "population")]
         
         trate$cum_cases <- (trate$Pruebas_cum/trate$population)*100000
-        trate$inc_cases <- (trate$Pruebas_inc/trate$population)*100000
-        trate <- trate[c("entidad", "date", "cum_cases", "inc_cases")]       
+        trate$new_cases <- (trate$Pruebas_inc/trate$population)*100000
+        trate <- trate[c("entidad", "date", "cum_cases", "new_cases")]       
         trate$var_resultado <- "TP"
         
   # Case fatality rates (cum and inc)
@@ -133,17 +133,17 @@ cum_inc <- function(select_state = "Ciudad de México",
         death <- death[c("entidad", "date", "Muertes_cum", "Muertes_inc")]
         
         tletal <- left_join(confirmed, death, by = c("entidad", "date")) 
-        tletal$cum_cases <- (tletal$Confirmados_cum/tletal$Muertes_cum)*100
-        tletal$inc_cases <- (tletal$Confirmados_inc/tletal$Muertes_inc)*100
-        tletal <- tletal[c("entidad", "date", "cum_cases", "inc_cases")]
+        tletal$cum_cases <- (tletal$Muertes_cum/tletal$Confirmados_cum)*100
+        tletal$new_cases <- (tletal$Muertes_inc/tletal$Confirmados_inc)*100
+        tletal <- tletal[c("entidad", "date", "cum_cases", "new_cases")]
         tletal$var_resultado <- "TLetal"
         
         
   remove(confirmed, death, test)
   
-  df_outcome <- df_outcome[c("entidad", "date", "var_resultado", "cum_cases", "inc_cases", "time_stamp")]
+  df_outcome <- df_outcome[c("entidad", "date", "var_resultado", "cum_cases", "new_cases", "time_stamp")]
   
-  df_outcome <- rbind(df_outcome, tposa, inci, trate, tletal)
+  df_outcome <- rbind(df_outcomes, tposa, inci, trate, tletal)
   
   df_outcome$time_stamp <- df_covid_ssa_state$time_stamp[1]
 
