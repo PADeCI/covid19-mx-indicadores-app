@@ -2695,6 +2695,9 @@ server <- function(input, output, session) {
         tags$b("UCI: "),
         "Casos confirmados que hayan requerido atención médica en una Unidad de Cuidados Intensivos (UCI). ",
         tags$br(),
+        tags$b("TLetal: "),
+        "Lorem Impsum ",
+        tags$br(),
         icon("far fa-hand-point-up")
       ),
       html = TRUE
@@ -3091,8 +3094,16 @@ server <- function(input, output, session) {
   
   observe({
     updateSelectInput(
-      session, "indicator_1", choices = v_outcome,
-      selected = if(input$all_ind_1) v_outcome
+      session, "indicator_1", choices = c(v_outcome, 
+                                          "Tasa Fatalidad" = "TLetal",
+                                          "Tasa de Positividad" = "TPos",
+                                          "Tasa de P" = "TP",
+                                          "Tasa de Incidentes" = "TI"),
+      selected = if(input$all_ind_1) c(v_outcome, 
+                                        "Tasa Fatalidad" = "TLetal",
+                                        "Tasa de Positividad" = "TPos",
+                                        "Tasa de P" = "TP",
+                                        "Tasa de Incidentes" = "TI")
     )
   })
   
