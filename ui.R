@@ -43,7 +43,7 @@ ui <-
                   
                   # Second MenuItem
                   menuItem("Gráficas", tabName = "graficas", icon = icon ("fas fa-chart-bar"),
-                           menuSubItem("Acumulados",
+                           menuSubItem("Indicadores en el tiempo",
                                        tabName = "graph1"),
                            menuSubItem("Acumulados/Incidentes",
                                        tabName = "graph11"),
@@ -52,9 +52,9 @@ ui <-
                            menuSubItem("Tasa de letalidad",
                                        tabName = "graph3"),
                            menuSubItem("Tiempos de duplicación",
-                                       tabName = "graph4"),
-                           menuSubItem("Mapas",
-                                       tabName = "graph5")
+                                       tabName = "graph4")
+                           #menuSubItem("Mapas",
+                                       #tabName = "graph5")
                   ),
                   
                   menuItem("Ficha técnica", tabName = "ficha", icon = icon("fas fa-book-open")),
@@ -167,7 +167,7 @@ ui <-
                               
                               width = 6,
                               
-                              title = "Indicadores!",
+                              title = "Indicadores",
                               status = "primary",
                               solidHeader = TRUE,
                               #width = 5,
@@ -177,7 +177,7 @@ ui <-
                                           choices = c(v_outcome, 
                                                       "Tasa Fatalidad" = "TLetal",
                                                       "Tasa de Positividad" = "TPos",
-                                                      "Tasa de P" = "TP",
+                                                      "Tasa de Pruebas" = "TP",
                                                       "Tasa de Incidentes" = "TI"
                                                       
                                                       ),

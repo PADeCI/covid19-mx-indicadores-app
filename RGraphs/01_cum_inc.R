@@ -143,7 +143,7 @@ cum_inc <- function(select_state = "Ciudad de México",
   
   df_outcome <- df_outcome[c("entidad", "date", "var_resultado", "cum_cases", "new_cases", "time_stamp")]
   
-  df_outcome <- rbind(df_outcomes, tposa, inci, trate, tletal)
+  df_outcome <- rbind(df_outcome, tposa, inci, trate, tletal)
   
   df_outcome$time_stamp <- df_covid_ssa_state$time_stamp[1]
 
@@ -366,14 +366,14 @@ cum_inc <- function(select_state = "Ciudad de México",
     color_outcome <- "#ff715b"
   } else if (length(outcome)==1 & outcome[1]=="UCI") {
     color_outcome <- "#432371"
-  } else if (length(outcome)==1 & outcome[1]=="TIA") {
+  } else if (length(outcome)==1 & outcome[1]=="TI") {
     color_outcome <- "#eb1ab3"
-  } else if (length(outcome)==1 & outcome[1]=="TPosA") {
+  } else if (length(outcome)==1 & outcome[1]=="TPos") {
     color_outcome <- "#8d10e0"
   } else if (length(outcome)==1 & outcome[1]=="TLetal") {
     color_outcome <- "#0895bd"
-  } else if (length(outcome)==1 & outcome[1]=="TPA") {
-    color_outcome <- "##b3d90b"
+  } else if (length(outcome)==1 & outcome[1]=="TP") {
+    color_outcome <- "#b3d90b"
   }
 
   
