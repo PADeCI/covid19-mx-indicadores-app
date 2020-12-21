@@ -711,8 +711,7 @@ cum_inc <- function(select_state = "Ciudad de México",
   } else if (length(select_state) == 1 & length(outcome) == 1){
     gg_outcome <- df_outcome %>%
       ggplot(mapping = aes(x = date,
-                           y = get(type)
-      )) +
+                           y = get(type))) +
       geom_line(size = .8,
                 color = color_outcome) +
       geom_vline(xintercept = as.numeric(as.Date("2020-03-23")), #Vertical line indicating the begining of social distancing
@@ -782,10 +781,26 @@ cum_inc <- function(select_state = "Ciudad de México",
         ggsave(paste0("figs/", n_time_stamp, "/", prefix, "_", prefix_type, "_", paste(outcome ,collapse="-"), states_list, ".jpeg"), 
                width = 14, height = 6)}
   }
+  
+  interactive_plot<-ggplotly(gg_outcome)%>%
+    layout(margin = list(l = 50, r = 50, t = 60, b = 150), ##bottom margin in pixels
+           font = "Times",
+           annotations = 
+             list(x = 0, y = -0.35, #position of text adjust as needed 
+                  text = paste(" Elaborado por @PADeCI1 el", format(Sys.Date(), "%d/%m/%Y"), 
+                               "a las",  format(Sys.time(), "%H:%M"), "horas.\n",
+                               "Fuente: Datos de la Dirección de Epidemiología de la", 
+                               "Secretaría de Salud con fecha", n_time_stamp, "."),
+                  showarrow = F, xref='paper', yref='paper', 
+                  align = "left",
+                  xanchor='left', yanchor='auto', xshift=0, yshift=0,
+                  font=list(size=10, color="gray70", hjust = 0))
+           
+    )
   if(print_plot == T){
     print(gg_outcome)
   }
   if(return_plot){
-    return(gg_outcome)  
+    return(interactive_plot)  
   }
 }
