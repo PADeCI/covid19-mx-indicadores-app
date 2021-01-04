@@ -118,7 +118,7 @@ ui <-
                               class = "btn_trans",
                               collapsible = F, width = 12,
                               column( 12, align="center" , tableOutput('top5')),
-                              plotOutput("plot1", height = 500) %>% withSpinner(color="#2980b9"),
+                              plotlyOutput("plot1", height = 500) %>% withSpinner(color="#2980b9"),
                               
                               # downloadButton(outputId = "down", label = "Download the plot"),
                               dropdownButton(

@@ -2528,7 +2528,7 @@ server <- function(input, output, session) {
   
   
   
-  output$plot1  <- renderPlot({
+  output$plot1  <- renderPlotly({
     out_grapy()
   })
   
