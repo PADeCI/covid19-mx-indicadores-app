@@ -3096,12 +3096,12 @@ server <- function(input, output, session) {
   
   #Graph 1 
   
-  observe({
-    updateSelectInput(
-      session, "n_lag_inf", choices = v_states_zmvm,
-      selected = if(input$all12) v_states_zmvm
-    )
-  })
+  # observe({
+  #   updateSelectInput(
+  #     session, "n_lag_inf", choices = v_states_zmvm,
+  #     selected = if(input$all12) v_states_zmvm
+  #   )
+  # })
   
   
   

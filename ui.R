@@ -150,9 +150,9 @@ ui <-
                               selectInput(inputId = "n_lag_inf",
                                           label = "Selecciona estados", 
                                           choices = v_states_zmvm , 
-                                          selected = "Ciudad de México",
+                                          selected = "ZMVM",
                                           multiple = TRUE),
-                              checkboxInput("all12", "Seleccionar Todos/Ninguno", value = TRUE),
+                              #checkboxInput("all12", "Seleccionar Todos/Ninguno", value = TRUE),
                               footer =
                                 
                                 actionButton(
